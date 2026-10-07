@@ -1,6 +1,6 @@
 <div align="center">
 
-# Live 照片手帐
+# Photo Echo · 照片回声
 
 **把旅途里有特点的一小块画面，留下来。**
 
@@ -101,103 +101,80 @@ GIF放大展示下半幅：连续水纹与叶端轻摆分成两个区域，主�
 
 ## 安装与使用
 
-### 在Codex里调用
+### 怎么用
 
-这是一个agent skill，包含提示词和本机制作助手。克隆到Codex的skills目录，保持目录名 `live-photo-handbook`：
+给Codex一张或一组图片，直接说：
+
+```text
+使用 $photo-echo，把这些图片做成手帐，结果放在一起。
+```
+
+也可以直接给图片路径或明确指定输出位置。取景、插画、轻量运动和文件整理由skill完成，不需要用户填写选区、运动计划、模型参数或逐张输出目录。
+
+一次输入对应一个结果目录。默认在第一张原图旁创建 **Photo Echo** 文件夹；聊天附件没有原目录时，保存到当前工作区。来自不同位置的图片也集中输出，每张按原文件名对应命名，同名自动加序号。
+
+插画使用Codex实际可用的生图能力，动态保持本机轻量微动。不会自动安装大视频模型或增加付费视频服务。已有插画可以复用，本机调整不重复生图。
+
+### 安装skill
+
+将仓库放入Codex的skills目录，保持目录名 `photo-echo`。安装后刷新技能列表或重新打开会话。
 
 **Windows PowerShell**
 
 ```powershell
-git clone https://github.com/Michaeloan/live-photo-handbook-skill.git "$env:USERPROFILE/.codex/skills/live-photo-handbook"
+git clone https://github.com/Michaeloan/photo-echo-skill.git "$env:USERPROFILE/.codex/skills/photo-echo"
 ```
 
 **macOS／Linux**
 
 ```sh
-git clone https://github.com/Michaeloan/live-photo-handbook-skill.git "$HOME/.codex/skills/live-photo-handbook"
+git clone https://github.com/Michaeloan/photo-echo-skill.git "$HOME/.codex/skills/photo-echo"
 ```
 
-如果设置了自定义 `CODEX_HOME`，改用对应的skills目录。安装后刷新技能列表或重开会话，附上照片并调用：
+自定义CODEX_HOME时，改用对应的skills目录。当前skill名为 `$photo-echo`，原仓库保留历史并由GitHub转向新名称。
 
-```text
-使用 $live-photo-handbook，把这些景物照片做成动态手帐。
-先选有特点的局部画面，保留必要环境和倒影关系；
-照片铺满上半幅，下半是小而精的插画和充足留白。
-只让叶端或局部水纹轻微运动，输出普通文件夹和MP4。
-```
+<details>
+<summary>开发者：复现公开素材与本机参数</summary>
 
-批量照片可一次提出制作请求，agent按每张照片独立选景、顺序生成与导出。模型和工具由环境实际提供；如指定Luna，需账号可用的 `gpt-6-luna` 和生图能力。照片发送云端前应明确授权素材与服务。本机助手没有云端SDK，不会自行调用模型或新增付费视频API。
-
-### 用公开真实素材复现流程
-
-在仓库根目录执行：
+日常使用只需给图片。下面是内部助手的复现方式，任务清单已随真实样例提供，无需手填：
 
 ```sh
 python -m pip install -r requirements.txt
-python scripts/render_handbook.py render --source assets/examples/05-island/source.jpg --art assets/examples/05-island/illustration.png --selection assets/examples/05-island/selection.json --plan assets/examples/05-island/motion.json --out outputs/island
+python scripts/photo_echo.py batch --jobs assets/examples/jobs.json --out outputs/PhotoEcho
 ```
 
-默认输出MP4、视频取帧封面与制作记录。静态路线编码器可由 `imageio-ffmpeg` 提供；原Live和Apple封装还需下表外部工具。只看静态版时增加 `--still`，无需FFmpeg。
+这条命令复用三张真实照片及现成插画，一次渲染并把三组PNG／MP4放在同一目录。公开原图已缩小，渲染器版本也有差异，复现不承诺与展示成品逐像素相同。
 
-仓库展示的是已确认版本的原成品；这条命令使用公开缩图、保存的插画与选区，在通用助手里复现同一制作流程。由于输入已缩小、渲染器版本不同，新输出不承诺与原成品逐像素相同。
+内部助手只做本机制作，不调用模型。需要静态图时增加 `--still`；Apple资源使用 `--apple`。视频需要FFmpeg，imageio-ffmpeg可提供普通照片路线编码器；原Live另需ffprobe；Apple封装另需Live Photo Box CLI与ExifTool。
 
-中文标题需要可用的中文字体。Windows优先使用系统微软雅黑，macOS使用苹方，Linux查找Noto CJK；也可设置 `LIVE_HANDBOOK_FONT` 指向字体文件。没有中文字体时增加 `--caption "quiet water"` 或 `--caption ""`。
+中文标题优先使用系统中文字体，亦可设置 `PHOTO_ECHO_FONT`。原LIVE_HANDBOOK环境变量保持兼容。调整焦点、大小、强度和封面仍使用各张自己的素材和参数，见 [内部输出与导出说明](references/live-export.md)。
 
-| 制作内容 | 所需工具 |
-| --- | --- |
-| 插画生成 | 宿主可用的图像生成／编辑工具 |
-| 静态拼版 | Python、Pillow、NumPy、OpenCV；HEIC解码由pillow-heif提供 |
-| 普通照片动画MP4 | 以上依赖＋FFmpeg |
-| 使用原Live视频 | 以上依赖＋ffprobe |
-| Apple JPG＋MOV资源 | 以上工具＋Live Photo Box CLI、ExifTool |
-
-换成自己的素材时：
-
-```sh
-python scripts/render_handbook.py crop --source source.jpg --selection selection.json --out reference.png
-python scripts/render_handbook.py render --source source.jpg --art illustration.png --selection selection.json --plan motion.json --out outputs/my-scene
-```
-
-使用新输出目录，脚本不覆盖旧结果。
-
-### 有插画，只想改比例或动画
-
-修改参数再渲染：`--focus 0.5 0.7` 调原片焦点，`--scale 0.9` 调插画大小，`--gain 0.8` 调局部强度，`--cover-seconds 1.2` 调封面时间。这些操作只用本机已有素材，不重复生图。
-
-无运动计划时，下方保持静止并在报告标明。取景、运动区域与保护笔迹逐张保存，批量不复制另一张的局部坐标。
+</details>
 
 ## 会得到什么
 
+假设输入 `湖湾.jpg` 和 `树影.png`，输出都在一起：
+
 ```text
-my-scene/
-├── preview.mp4       电脑直接播放的完整手帐
-├── cover.png         从同一视频取出的无损封面
-├── cover.jpg         Apple封装使用的同一帧封面
-├── illustration.png  处理后的插画资产
-├── reference.png     实际取景参考，有selection时保存
-├── report.json       比例、选区、计划、状态与检查记录
-└── apple/            可选；校验成功后生成JPG＋MOV
+Photo Echo/
+├── 湖湾_手帐.png
+├── 湖湾_手帐.mp4
+├── 树影_手帐.png
+├── 树影_手帐.mp4
+└── .photo-echo/       内部工作文件，无需逐张整理
 ```
 
-静态模式保存PNG封面、插画、参考与报告。默认普通文件夹，无需解压。
+静态模式只输出PNG。原图完整保留；追加制作不会覆盖旧成品。同名来源自动变为 `湖湾_2_手帐.png` 等，成功项会保留，失败项单独记录并继续处理其余图片。
 
-### 普通照片与原始Live
+需要Apple实况时，再增加按原名配对的 `湖湾_实况.JPG` 与 `湖湾_实况.MOV`。默认普通文件夹，无需解压；电脑直接播放MP4即可。
 
 | 输入 | 原照片区域 | 插画区域 |
 | --- | --- | --- |
-| 静态照片／扫描裁剪图 | 保持静止 | 局部循环 |
-| 完整原Live配对 | 原视频动作、时长与可用音轨 | 同步局部运动 |
-| 缺MOV的Live静帧 | 提示缺失，按静态处理 | 局部循环 |
+| 静态照片／扫描裁剪图 | 保持静止 | 本机局部微动 |
+| 完整原Live配对 | 使用原视频动作、时长与可用音轨 | 同步微动 |
+| 缺少MOV的Live静帧 | 提示缺失，按静态处理 | 本机局部微动 |
 
-确认配对后增加 `--live-video original.mov`。静帧和视频按转正坐标等比处理，原视频不会倒放、补帧或被静帧修复替换。
-
-### Apple实况资源
-
-安装外部工具后增加 `--apple`。采用JPG＋MOV配对输出，检查内容标识、定时轨道与封面时间。HEIC／HEIF可作为输入照片格式，不能仅凭扩展名认定完整实况。
-
-电脑播放用MP4即可。`apple_verified=true`表示电脑检查通过；`phone_verified=true`需真实iPhone导入与长按播放验证。七张原成品的电脑配对检查通过，公开示例未做手机实机验收；仓库提供MP4和检查记录，Apple配对资源通过命令另行生成。封装失败保留MP4与封面、报告具体原因并返回状态2。
-
-工具配置、配对和恢复见 [动态与实况资源](references/live-export.md)。
+七张公开作品均来自真实照片。电脑Apple元数据检查与iPhone实机检查分别记录，不把MP4或普通HEIF当作完整Apple实况；手机实机验收尚未进行。详细规则收在 [导出说明](references/live-export.md)。
 
 ## 仓库里有什么
 
@@ -207,11 +184,11 @@ my-scene/
 | [prompts.md](references/prompts.md) | 三阶段提示词与针对性修正 |
 | [layout-and-style.md](references/layout-and-style.md) | 比例、光学重心、密度与关系 |
 | [live-export.md](references/live-export.md) | 原Live、Apple检查与批量恢复 |
-| [render_handbook.py](scripts/render_handbook.py) | 不调用模型的本机助手 |
+| [photo_echo.py](scripts/photo_echo.py) | 整批集中输出的本机助手 |
 | [assets/](assets/) | 七张真实照片的公开缩图、插画、选区、计划与已确认成品 |
 | [sources.md](references/sources.md) | 示例来源、方法参考和许可 |
 
-本仓库提供skill与独立助手，桌面界面、队列按钮和EXE不在此包中。批量由agent顺序调度，单张失败保留已完成成果，重试优先复用已生成图片。
+本仓库提供skill与独立助手，桌面界面、队列按钮和EXE不在此包中。取景与生成由agent处理，本机batch助手一次处理整组、集中输出，单张失败保留已完成成果。
 
 ## 参考与许可
 

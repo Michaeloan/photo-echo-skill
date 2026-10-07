@@ -19,7 +19,7 @@
 - Apple资源：独立 [Live Photo Box CLI](https://github.com/LengxiQwQ/live-photo-box/blob/master/docs/CLI-User-Guide.zh-CN.md)、ffprobe、ExifTool。它们不生成插画。
 - 云端生成：用户指定且可用的生图工具。Luna做视觉决策与工具编排，本机渲染器负责运动；不能将其描述为图生视频模型。
 
-工具放在PATH，或设置绝对路径环境变量 `LIVE_HANDBOOK_FFMPEG`、`LIVE_HANDBOOK_FFPROBE`、`LIVE_HANDBOOK_EXIFTOOL`、`LIVE_HANDBOOK_LIVEPHOTOBOX`。本仓库不携带工具二进制，按原项目安装并遵守各自许可。
+工具放在PATH，或设置绝对路径环境变量 `PHOTO_ECHO_FFMPEG`、`PHOTO_ECHO_FFPROBE`、`PHOTO_ECHO_EXIFTOOL`、`PHOTO_ECHO_LIVEPHOTOBOX`。旧LIVE_HANDBOOK前缀仍兼容。工具不随仓库打包，按原项目安装。
 
 集成用户指定的Windows桌面工作台时，沿用其能力要求：启动只做检测；Codex桌面未运行禁止新AI任务，本机导入、已有项目预览与导出仍可用。独立使用skill时按宿主实际能力调用，不强行创建或接管另一个聊天、不修改全局模型配置。
 
@@ -31,7 +31,7 @@
 
 默认静态输入3秒、30fps、H.264、SDR。原Live按旋转信息转正并等比裁入上半。保留声音时重新编码为AAC，不能声称音轨压缩比特完全相同。HDR经显式SDR转换后记录提示，不承诺等同原HDR显示。
 
-封面从最终视频的指定帧取出，不能另用不一致的排版静态图。开始前校验参数，输出新目录防覆盖；视频写临时文件成功后改名，失败保留插画和阶段报告。
+封面从最终视频指定帧取出。所有输入共享一个成品目录，按源文件名输出；重名加序号防覆盖。插画、参考与记录在.photo-echo内部工作区，视频临时编码成功后才发布成品。
 
 空计划可以生成静止下半预览，但须报告未配置运动；文件后缀MP4不等于插画已经动起来。
 
@@ -67,4 +67,4 @@ lpb split motion-photo.jpg -p apple -f jpg+mov -o apple --key-timestamp 1.5 -j 1
 
 图片取得后先落盘再去底、分析运动。后续失败重试复用该图。重新生图失败保存待替换意图，不能因旧图仍在就把重试当旧作品缓存命中。恢复只将进行中状态改为中断，不自动云端调用。
 
-独立CLI一次处理一张，供skill按批次顺序调用，不包含桌面任务队列或暂停按钮。Agent汇总失败、成功和未处理数量，保留每张输出与错误；不复制另一张的取景、焦点或蒙版。
+CLI的batch模式读取Agent内部任务清单，一次调用顺序处理整个输入组，统一输出。没有桌面任务按钮；取消保留已完成文件，并记录未处理数量。只重试指定失败项，不复制其他照片的取景、焦点或蒙版。

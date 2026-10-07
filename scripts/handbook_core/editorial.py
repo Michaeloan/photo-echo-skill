@@ -36,7 +36,7 @@ def _weights(art):
 
 
 def _font(size,caption):
-    explicit = os.environ.get("LIVE_HANDBOOK_FONT")
+    explicit = os.environ.get("PHOTO_ECHO_FONT") or os.environ.get("LIVE_HANDBOOK_FONT")
     if explicit:
         return ImageFont.truetype(explicit,size)
     cjk = any(ord(c)>127 for c in caption)
@@ -45,7 +45,7 @@ def _font(size,caption):
         ["C:/Windows/Fonts/couri.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"])
     path = next((Path(value) for value in candidates if Path(value).is_file()), None)
     if cjk and path is None:
-        raise ValueError("中文标题需要CJK字体；设置LIVE_HANDBOOK_FONT，或传 --caption 空标题")
+        raise ValueError("中文标题需要CJK字体；设置PHOTO_ECHO_FONT，或传 --caption 空标题")
     return ImageFont.truetype(str(path),size) if path else ImageFont.load_default()
 
 

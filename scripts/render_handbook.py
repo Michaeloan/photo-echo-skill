@@ -3,12 +3,17 @@ from __future__ import annotations
 import argparse
 import copy
 import hashlib
+import contextlib
+import io
 import json
 import math
 from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+import re
+import uuid
+import os
 
 from PIL import Image, ImageOps
 import pillow_heif
@@ -95,7 +100,7 @@ def encode(scene, plan, target, fps, duration, live_video=None, focus=(.5, .5)):
              "-movflags", "+faststart", target], timeout=max(180, duration*20))
 
 
-def export(args):
+def _render_one(args):
     # Validate everything before decoding media, creating outputs or running a tool.
     if type(args.width) is not int or type(args.height) is not int or not 64<=args.width<=2160 or not 64<=args.height<=2880:
         raise ValueError("Canvas outside supported size")
@@ -181,15 +186,171 @@ def export(args):
         raise
 
 
+def _output_folder(args, source):
+    output = Path(args.out).expanduser() if args.out else source.parent/"Photo Echo"
+    output = output.resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    if not output.is_dir():
+        raise ValueError("Output must be a folder")
+    (output/".photo-echo").mkdir(exist_ok=True)
+    return output
+
+
+def _reserve_name(output, source):
+    stem = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "_", source.stem).strip(" .")[:100] or "Photo"
+    if stem.split(".",1)[0].upper() in {"CON","PRN","AUX","NUL",*[f"{base}{i}" for base in ("COM","LPT") for i in range(1,10)]}:
+        stem = "_"+stem
+    reserved = output/".photo-echo/names"
+    reserved.mkdir(exist_ok=True)
+    existing = {p.name.casefold() for p in output.iterdir()}
+    suffixes = ("_手帐.png","_手帐.mp4","_实况.JPG","_实况.MOV")
+    for index in range(1,10001):
+        name = stem if index==1 else f"{stem}_{index}"
+        if any((name+suffix).casefold() in existing for suffix in suffixes):
+            continue
+        lock = reserved/(name.casefold()+".lock")
+        try:
+            with lock.open("x",encoding="utf-8") as file:
+                file.write(source.name)
+            return name, lock
+        except FileExistsError:
+            continue
+    raise ValueError("Too many identically named inputs")
+
+
+def _publish(output, cache, name, record):
+    candidates = [("cover","_手帐.png"),("video","_手帐.mp4"),
+                  ("apple_image","_实况.JPG"),("apple_video","_实况.MOV")]
+    pending, installed = [], []
+    try:
+        for key,suffix in candidates:
+            relative = record.get("files",{}).get(key)
+            if not relative:
+                continue
+            source = (cache/relative).resolve()
+            if not source.is_relative_to(cache.resolve()) or not source.is_file():
+                raise ValueError("Completed result is missing or outside its workspace")
+            target = output/(name+suffix)
+            if target.exists():
+                raise ValueError("Result name was taken; existing files are preserved")
+            stage = cache/(uuid.uuid4().hex+".publish")
+            shutil.copyfile(source,stage)
+            pending.append((stage,target))
+        for stage,target in pending:
+            try:
+                os.link(stage,target)
+            except FileExistsError:
+                raise ValueError("Result already exists; it was not overwritten") from None
+            except OSError:
+                # Filesystems without hardlinks still get exclusive creation.
+                with target.open("xb") as writer:
+                    installed.append(target)
+                    with stage.open("rb") as reader:
+                        shutil.copyfileobj(reader,writer,1024*1024)
+            else:
+                installed.append(target)
+        return [path.name for path in installed]
+    except BaseException:
+        for path in installed:
+            path.unlink(missing_ok=True)
+        raise
+    finally:
+        for stage,_ in pending:
+            stage.unlink(missing_ok=True)
+
+
+def _jobs(args):
+    if args.command != "batch":
+        return [{"source":str(Path(args.source).expanduser().resolve()),"art":args.art,
+                 **{key:getattr(args,key) for key in ("selection","plan","live_video","caption","focus")}}]
+    jobs_file = Path(args.jobs).expanduser().resolve()
+    raw = read_json(jobs_file)
+    if not isinstance(raw,list) or not 1<=len(raw)<=1000:
+        raise ValueError("Batch requires 1–1000 photo items")
+    allowed = {"source","art","selection","plan","live_video","caption","focus"}
+    result = []
+    for item in raw:
+        if not isinstance(item,dict) or set(item)-allowed or not {"source","art"}<=set(item):
+            raise ValueError("Batch item needs source and artwork; unknown settings refused")
+        clean = dict(item)
+        for key in ("source","art","selection","plan","live_video"):
+            value = clean.get(key)
+            if value is None and key not in ("source","art"):
+                continue
+            if not isinstance(value,str) or not value.strip():
+                raise ValueError("Material paths must be nonempty strings")
+            path = Path(value).expanduser()
+            clean[key] = str((jobs_file.parent/path).resolve() if not path.is_absolute() else path.resolve())
+        result.append(clean)
+    return result
+
+
+def export(args):
+    """One shared result folder; intermediate files remain in its private workspace."""
+    jobs = _jobs(args)
+    output = _output_folder(args,Path(jobs[0]["source"]))
+    summary = {"status":"processing","output":str(output),"success":0,"partial":0,"failed":0,"interrupted":0,
+               "unprocessed":len(jobs),"results":[]}
+    report_file = output/".photo-echo"/("batch-"+uuid.uuid4().hex+".json")
+    def save_summary():
+        stage=report_file.with_suffix(".tmp")
+        stage.write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding="utf-8")
+        stage.replace(report_file)
+    save_summary()
+    interrupted = False
+    for item in jobs:
+        source = Path(item["source"])
+        cache = output/".photo-echo"/uuid.uuid4().hex
+        name, lock = _reserve_name(output,source)
+        chosen = copy.copy(args)
+        for key in ("selection","plan","live_video","caption","focus"):
+            setattr(chosen,key,item.get(key))
+        chosen.source,chosen.art,chosen.out = str(source),item["art"],str(cache)
+        entry = {"input":source.name,"state":"failed","files":[]}
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = _render_one(chosen)
+            record = read_json(cache/"report.json")
+            entry["files"] = _publish(output,cache,name,record)
+            entry["state"] = record["state"]
+            if code==2:
+                summary["partial"] += 1
+                entry["error"] = record.get("apple_error","Apple export incomplete")
+            else:
+                summary["success"] += 1
+        except (KeyboardInterrupt,InterruptedError) as error:
+            entry.update(state="interrupted",error=str(error) or "Processing interrupted")
+            summary["interrupted"] += 1
+            interrupted = True
+        except Exception as error:
+            summary["failed"] += 1
+            entry["error"] = str(error)
+        finally:
+            summary["results"].append(entry)
+            summary["unprocessed"] -= 1
+            summary["status"] = "interrupted" if interrupted else "processing"
+            lock.unlink(missing_ok=True)
+            save_summary()
+        if interrupted:
+            break
+    if not interrupted:
+        summary["status"] = "complete" if not summary["failed"] and not summary["partial"] else (
+            "partial" if summary["success"] or summary["partial"] else "failed")
+    save_summary()
+    print(json.dumps(summary,ensure_ascii=False))
+    return 130 if interrupted else 2 if summary["failed"] or summary["partial"] else 0
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     sub = commands.add_parser("crop", help="Validate selection and save the actual AI reference")
     for name in ("source", "selection", "out"):
         sub.add_argument("--"+name, required=True)
-    sub = commands.add_parser("render", help="Make a still or locally animated handbook")
-    for name in ("source", "art", "out"):
+    sub = commands.add_parser("render", help="Make one photo echo in the shared result folder")
+    for name in ("source", "art"):
         sub.add_argument("--"+name, required=True)
+    sub.add_argument("--out", help="Default: Photo Echo folder beside the input photo")
     for name in ("selection", "plan", "live-video", "caption"):
         sub.add_argument("--"+name)
     sub.add_argument("--width", type=int, default=1080)
@@ -202,6 +363,15 @@ def main():
     sub.add_argument("--cover-seconds", type=float)
     sub.add_argument("--still", action="store_true")
     sub.add_argument("--apple", action="store_true")
+    sub = commands.add_parser("batch", help="Internal helper: one photo group, one result folder")
+    sub.add_argument("--jobs",required=True,help="Agent-prepared material list; paths relative to this file")
+    sub.add_argument("--out",help="Default: Photo Echo folder beside the first input photo")
+    for name,typ,default in (("width",int,1080),("height",int,1440),("fps",int,30),
+                             ("duration",float,3),("scale",float,1),("gain",float,1)):
+        sub.add_argument("--"+name,type=typ,default=default)
+    sub.add_argument("--cover-seconds",type=float)
+    sub.add_argument("--still",action="store_true")
+    sub.add_argument("--apple",action="store_true")
     args = parser.parse_args()
     try:
         return crop(args) if args.command == "crop" else export(args)

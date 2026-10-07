@@ -1,0 +1,5 @@
+[
+  {"source": "02-branch-water/source.jpg", "art": "02-branch-water/illustration.png", "selection": "02-branch-water/selection.json", "plan": "02-branch-water/motion.json"},
+  {"source": "05-island/source.jpg", "art": "05-island/illustration.png", "selection": "05-island/selection.json", "plan": "05-island/motion.json"},
+  {"source": "06-tree-reflection/source.jpg", "art": "06-tree-reflection/illustration.png", "selection": "06-tree-reflection/selection.json", "plan": "06-tree-reflection/motion.json"}
+]

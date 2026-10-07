@@ -75,10 +75,8 @@ class HandbookTests(unittest.TestCase):
             argv = ["render_handbook.py", "render", "--source", "nonexistent.jpg", "--art", "nonexistent.png",
                     "--plan", str(plan), "--out", str(self.root/"out")]
             with patch.object(sys, "argv", argv), patch("render_handbook.tool_path", side_effect=AssertionError("tools must not run")):
-                with self.assertRaises(SystemExit) as error:
-                    main()
-                self.assertEqual(error.exception.code, 1)
-            self.assertFalse((self.root/"out").exists())
+                self.assertEqual(main(),2)
+            self.assertFalse(list((self.root/"out").glob("*_手帐.*")))
     def test_still_export_does_not_need_ffmpeg_and_refuses_overwrite(self):
         source, art, output = self.root/"source.png", self.root/"art.png", self.root/"result"
         Image.new("RGB", (120, 80), "blue").save(source)
@@ -87,13 +85,15 @@ class HandbookTests(unittest.TestCase):
                 "--out",str(output),"--still","--width","120","--height","160"]
         with patch.object(sys, "argv", argv), patch("render_handbook.tool_path", side_effect=AssertionError("still must not probe")):
             self.assertEqual(main(), 0)
-        report = read_json(output/"report.json")
+        report = read_json(next((output/".photo-echo").glob("*/report.json")))
         self.assertEqual(report["state"], "still_ready")
         self.assertFalse(report["animation_configured"])
-        self.assertTrue((output/"cover.png").is_file())
+        self.assertTrue((output/"source_手帐.png").is_file())
+        before=(output/"source_手帐.png").read_bytes()
         with patch.object(sys, "argv", argv):
-            with self.assertRaises(SystemExit):
-                main()
+            self.assertEqual(main(),0)
+        self.assertEqual((output/"source_手帐.png").read_bytes(),before)
+        self.assertTrue((output/"source_2_手帐.png").is_file())
     def test_real_heic_is_decoded_by_standalone_cli(self):
         source, art, output = self.root/"source.heic", self.root/"art.png", self.root/"heic-result"
         Image.new("RGB", (120, 80), "blue").save(source, format="HEIF")
@@ -102,7 +102,7 @@ class HandbookTests(unittest.TestCase):
                 "--out",str(output),"--still","--width","120","--height","160"]
         with patch.object(sys, "argv", argv):
             self.assertEqual(main(), 0)
-        report = read_json(output/"report.json")
+        report = read_json(next((output/".photo-echo").glob("*/report.json")))
         self.assertEqual(report["composition"]["source_size"], [120,80])
         self.assertEqual(report["state"], "still_ready")
     def test_native_live_preserves_audio_duration_and_fills_top(self):

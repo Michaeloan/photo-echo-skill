@@ -20,7 +20,7 @@ def stop_process(process):
             process.kill(); process.wait(timeout=3)
 
 def tool_path(name):
-    override = os.environ.get("LIVE_HANDBOOK_" + name.upper())
+    override = os.environ.get("PHOTO_ECHO_" + name.upper()) or os.environ.get("LIVE_HANDBOOK_" + name.upper())
     if override and Path(override).is_file():
         return str(Path(override).resolve())
     aliases = {"livephotobox": ["lpb", "livephotobox"], "exiftool": ["exiftool"]}

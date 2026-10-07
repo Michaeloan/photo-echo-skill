@@ -1,22 +1,26 @@
 ---
-name: live-photo-handbook
+name: photo-echo
 description: "将照片中有特点的局部画面做成精巧小景插画，保留原片并本机排版、生成克制局部动画；适用于照片手帐、动态旅途记忆、Live Photo 资源制作与此类成图优化。"
 license: MIT
 ---
 
-# Live 照片手帐
+# Photo Echo · 照片回声
 
 让原照片保留观看的主体地位，用一小块有辨识度的连续画面作为下方插画，只让合适的局部轻微运动。用户明确的构图、比例、模型与输出选择优先；以下是这套风格的默认值。
 
 ## 开始制作
 
-先查看实际输入，区分静态照片、完整Live配对及缺配套视频的静帧。批量输入按每张照片建立独立选择与输出目录，不把示例的对象、坐标、蒙版或名字套给新照片。
+用户只需给图片，或给图片所在路径；不要让用户准备选区、插画、运动计划或逐张指定目录。查看实际输入，区分静态照片、完整Live配对及缺视频的静帧。Agent负责取景、调用生图、制定轻量运动和导出；同一批所有成品放进一个目录，每张设置在内部独立保存。
+
+默认在第一张原图旁创建 `Photo Echo` 文件夹；用户指定保存位置时用该位置。聊天附件没有可用原目录时，使用当前工作区的 `Photo Echo`。多来源也集中到这一个目录，不分散到各输入位置。只处理用户这次给的图片，不扫描其他目录或自己的输出。
+
+按原图文件名对应输出：`湖湾_手帐.png`、`湖湾_手帐.mp4`。需要Apple资源时再加同名实况JPG＋MOV。重名自动加序号，原片不改、不覆盖已完成成果。取景、插画和记录放在 `.photo-echo/` 内部工作目录，最终只告诉用户一个结果目录和处理统计。
 
 使用当前环境提供的图像生成／编辑工具，按用户指定的模型和服务处理。若要求Luna，先发现账号实际可用的 `gpt-6-luna` 与真实生图工具，不能用文字模拟图片产物。照片发送到服务前需要明确该素材与目的地已获用户授权；授权不扩展到GitHub上传或社交发布。工具不可用时，导入已有插画继续本机制作，说明能力缺口。
 
 生成插画前阅读 [取景与生图提示词](references/prompts.md)。本机排版和风格修改阅读 [比例与审美](references/layout-and-style.md)；要做动画、原Live或Apple导出时再读 [动态与实况资源](references/live-export.md)。
 
-反馈运动不自然、像抖动或橡皮拉扯时，先读 [自然运动后端](references/natural-motion.md)。当前助手是微动路线，不能只增大位移就声称达到真实运动。先确认素材与后端能力，再选微动、分层、学习流场或受控图生视频；不静默下载大模型或新增付费服务。
+保持轻量本机微动路线，不主动引入大视频模型、ComfyUI或付费接口。说明微动的质量边界，不将重影减少当成自然动作重建。只有用户另行明确要求研究其他后端时，才读 [相关研究](references/natural-motion.md)。
 
 ## 先选画面，再画插画
 
@@ -42,19 +46,20 @@ license: MIT
 先安装 `requirements.txt` 中的本机图像依赖。可用命令：
 
 ```sh
-python scripts/render_handbook.py crop --source source.jpg --selection selection.json --out reference.png
-python scripts/render_handbook.py render --source source.jpg --art illustration.png --selection selection.json --plan motion.json --out output/scene-01
+python scripts/photo_echo.py batch --jobs internal-jobs.json
 ```
 
-`--still` 只输出静态PNG；没有FFmpeg时可使用。`--live-video original.mov` 指定已确认配对的原Live视频；`--apple` 请求Apple配对封装。`--focus X Y`、`--scale`（0.7–1.3）、`--gain`（0–2）、`--cover-seconds` 只本机重渲染。参数调整使用新输出目录，旧成果不自动覆盖。
+以上为Agent内部本机命令，不把参数或任务JSON交给用户填写。每个任务含source与已生成art，按需带selection、plan、live_video、caption或focus；文件路径相对任务清单解析。批量一次调用，单张也可用render模式。默认输出为图片旁的Photo Echo，--out可统一指定位置。
+
+`--still` 只输出PNG；`--apple` 请求配对资源。render的 `--live-video` 指定上半原Live视频。焦点、比例、强度和封面由Agent用已有素材本机重渲染，旧成品不覆盖。参数与取景逐张保留，不复制给其他照片。
 
 ## 批量与交付
 
-每张保留自己的源图、取景、插画、运动计划与阶段记录；一次启动后顺序执行。某张失败可继续其余输入，汇总成功／失败／未处理数量。重试优先复用已生成图片；禁止把渲染失败当作重新生图理由。重新启动不自动发送AI请求。
+每张的取景、插画、计划和阶段记录收进同一输出目录的内部工作区；一次启动后顺序执行。失败继续其余输入，汇总成功／部分完成／失败／未处理数量。重试复用已生成图片，渲染失败不自动重生图。
 
 调整版式、焦点、强度或封面时复用插画。批量应用不复制四角、手工保护笔迹、运动蒙版或另一张的取景坐标。旧项目保持既有版式，主动套用新版才迁移。
 
-默认交付普通文件夹：MP4、同一视频取帧的封面、插画、取景参考与 `report.json`。Apple封装成功再增加JPG＋MOV；静态专用交付标记 `still_ready`。无区域的作品说明下方当前静止，不能声称已生成运动。
+默认交付一个普通文件夹：按原名排列的手帐PNG与MP4。Apple成功再增加同名JPG＋MOV。插画、取景、封面中间稿和制作记录留在内部工作目录，不散布在结果区。无区域的作品说明下方当前静止。
 
 ## 完成检查
 
