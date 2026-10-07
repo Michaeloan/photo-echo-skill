@@ -1,0 +1,19 @@
+{
+  "mode": "subject",
+  "primary_box": [
+    0.5,
+    0.45,
+    0.48,
+    0.44
+  ],
+  "crop_box": [
+    0.5,
+    0.45,
+    0.48,
+    0.44
+  ],
+  "expanded": false,
+  "reason": "近景叶端框住湖光，近清远虚的关系在小框中已成立，不加入整座背景山。",
+  "subject": "叶端与湖光",
+  "caption": "Leaves / Light"
+}

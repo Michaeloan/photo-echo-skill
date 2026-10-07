@@ -1,0 +1,19 @@
+{
+  "mode": "subject",
+  "primary_box": [
+    0.31,
+    0.27,
+    0.3,
+    0.49
+  ],
+  "crop_box": [
+    0.31,
+    0.27,
+    0.3,
+    0.49
+  ],
+  "expanded": false,
+  "reason": "一处受光树丛连同下方倒影已经有辨识度，不扩大到整个岸线或远处另一植物岛。",
+  "subject": "亮树与倒影",
+  "caption": "A quiet shore"
+}

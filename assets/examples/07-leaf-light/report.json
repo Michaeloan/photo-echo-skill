@@ -1,0 +1,130 @@
+{
+  "title": "叶端与湖光",
+  "source_kind": "real_travel_photograph",
+  "illustration_model": "gpt-6-luna",
+  "selection": {
+    "mode": "subject",
+    "primary_box": [
+      0.5,
+      0.45,
+      0.48,
+      0.44
+    ],
+    "crop_box": [
+      0.5,
+      0.45,
+      0.48,
+      0.44
+    ],
+    "expanded": false,
+    "reason": "近景叶端框住湖光，近清远虚的关系在小框中已成立，不加入整座背景山。",
+    "subject": "叶端与湖光",
+    "caption": "Leaves / Light"
+  },
+  "composition": {
+    "style": "subject-first-printed-memory",
+    "layout_version": "full-bleed-equal-halves-1",
+    "canvas": [
+      1080,
+      1440
+    ],
+    "original_rect": [
+      0,
+      0,
+      1080,
+      720
+    ],
+    "paper_rect": [
+      0,
+      720,
+      1080,
+      720
+    ],
+    "art_rect": [
+      454,
+      965,
+      388,
+      299
+    ],
+    "caption": "Leaves / Light",
+    "caption_position": [
+      592,
+      1299
+    ],
+    "split": 0.5,
+    "outer_frame": false,
+    "photo_full_bleed": true,
+    "source_size": [
+      3701,
+      5521
+    ],
+    "header_crop_pixels": [
+      0,
+      2466,
+      3701,
+      4933
+    ],
+    "header_crop_normalized": [
+      0.0,
+      0.4466582140916501,
+      1.0,
+      0.8934975547907987
+    ],
+    "aspect_policy": "上半幅为原片等比展示裁切，原文件不改；插画等比缩放",
+    "phone_verified": false
+  },
+  "plan": {
+    "regions": [
+      {
+        "type": "wave",
+        "x": 0.15,
+        "y": 0.57,
+        "w": 0.25,
+        "h": 0.13,
+        "amplitude": 0.012,
+        "seed": 17
+      },
+      {
+        "type": "wave",
+        "x": 0.32,
+        "y": 0.76,
+        "w": 0.24,
+        "h": 0.12,
+        "amplitude": 0.012,
+        "seed": 17
+      }
+    ],
+    "version": 1
+  },
+  "source_derivative": "source.jpg",
+  "source_derivative_size": [
+    1287,
+    1920
+  ],
+  "source_derivative_sha256": "b6f24ca432d353cc27d8dbacc9b13d58d55b7938d0747b7fa084986fa3a4fc1c",
+  "reference_derivative": "reference.jpg",
+  "video": "preview.mp4",
+  "source_layer_static": true,
+  "exact_loop_before_encode": true,
+  "apple_verified": true,
+  "apple_checks": {
+    "valid": true,
+    "paired_identifier": true,
+    "timed_metadata": true,
+    "cover_timestamp": true
+  },
+  "phone_verified": false,
+  "encoded_video_checks": {
+    "duration": 3.0,
+    "canvas": [
+      1080,
+      1440
+    ],
+    "photo_mean_delta_255": 0.021833847736625514,
+    "art_mean_delta_255": 0.5068354997758853,
+    "moving_pixels_above_3": 5308,
+    "note": "照片源层逐帧一致；视频压缩允许极小误差。动态只在插画局部。"
+  },
+  "cloud_calls_for_this_publication": 0,
+  "note": "成品直接来自已确认版本；公开原片/参考为去元数据缩图，未重新生图。"
+}

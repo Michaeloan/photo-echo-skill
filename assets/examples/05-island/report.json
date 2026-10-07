@@ -1,0 +1,130 @@
+{
+  "title": "植物小岛",
+  "source_kind": "real_travel_photograph",
+  "illustration_model": "gpt-6-luna",
+  "selection": {
+    "mode": "subject",
+    "primary_box": [
+      0.32,
+      0.58,
+      0.32,
+      0.36
+    ],
+    "crop_box": [
+      0.32,
+      0.58,
+      0.32,
+      0.36
+    ],
+    "expanded": false,
+    "reason": "小植物岛、短沉木和紧邻倒影已经能独立读懂；停止扩大，不加入远岸森林。",
+    "subject": "植物小岛",
+    "caption": "Still water"
+  },
+  "composition": {
+    "style": "subject-first-printed-memory",
+    "layout_version": "full-bleed-equal-halves-1",
+    "canvas": [
+      1080,
+      1440
+    ],
+    "original_rect": [
+      0,
+      0,
+      1080,
+      720
+    ],
+    "paper_rect": [
+      0,
+      720,
+      1080,
+      720
+    ],
+    "art_rect": [
+      397,
+      947,
+      300,
+      302
+    ],
+    "caption": "Still water",
+    "caption_position": [
+      479,
+      1284
+    ],
+    "split": 0.5,
+    "outer_frame": false,
+    "photo_full_bleed": true,
+    "source_size": [
+      6048,
+      4032
+    ],
+    "header_crop_pixels": [
+      0,
+      0,
+      6048,
+      4032
+    ],
+    "header_crop_normalized": [
+      0.0,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "aspect_policy": "上半幅为原片等比展示裁切，原文件不改；插画等比缩放",
+    "phone_verified": false
+  },
+  "plan": {
+    "regions": [
+      {
+        "type": "wave",
+        "x": 0.015,
+        "y": 0.51,
+        "w": 0.17,
+        "h": 0.17,
+        "amplitude": 0.012,
+        "seed": 17
+      },
+      {
+        "type": "wave",
+        "x": 0.4,
+        "y": 0.77,
+        "w": 0.16,
+        "h": 0.18,
+        "amplitude": 0.012,
+        "seed": 17
+      }
+    ],
+    "version": 1
+  },
+  "source_derivative": "source.jpg",
+  "source_derivative_size": [
+    1920,
+    1280
+  ],
+  "source_derivative_sha256": "8b10fe2841d93b92fee91366343bb129036df52b77a875e7df25503fe71b1e24",
+  "reference_derivative": "reference.jpg",
+  "video": "preview.mp4",
+  "source_layer_static": true,
+  "exact_loop_before_encode": true,
+  "apple_verified": true,
+  "apple_checks": {
+    "valid": true,
+    "paired_identifier": true,
+    "timed_metadata": true,
+    "cover_timestamp": true
+  },
+  "phone_verified": false,
+  "encoded_video_checks": {
+    "duration": 3.0,
+    "canvas": [
+      1080,
+      1440
+    ],
+    "photo_mean_delta_255": 0.008892318244170095,
+    "art_mean_delta_255": 0.9779948491537895,
+    "moving_pixels_above_3": 4120,
+    "note": "照片源层逐帧一致；视频压缩允许极小误差。动态只在插画局部。"
+  },
+  "cloud_calls_for_this_publication": 0,
+  "note": "成品直接来自已确认版本；公开原片/参考为去元数据缩图，未重新生图。"
+}

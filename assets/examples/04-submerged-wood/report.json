@@ -1,0 +1,145 @@
+{
+  "title": "沉木水光",
+  "source_kind": "real_travel_photograph",
+  "illustration_model": "gpt-6-luna",
+  "selection": {
+    "mode": "scene",
+    "primary_box": [
+      0.24,
+      0.38,
+      0.49,
+      0.32999999999999996
+    ],
+    "crop_box": [
+      0.17,
+      0.3,
+      0.64,
+      0.52
+    ],
+    "expanded": true,
+    "reason": "小框会割断沉木分叉与水光交叠关系，扩大一级补足这处特色水下景；不加入完整湖面。",
+    "subject": "沉木水光",
+    "caption": "Under the surface"
+  },
+  "composition": {
+    "style": "subject-first-printed-memory",
+    "layout_version": "full-bleed-equal-halves-1",
+    "canvas": [
+      1080,
+      1440
+    ],
+    "original_rect": [
+      0,
+      0,
+      1080,
+      720
+    ],
+    "paper_rect": [
+      0,
+      720,
+      1080,
+      720
+    ],
+    "art_rect": [
+      461,
+      944,
+      190,
+      302
+    ],
+    "caption": "Under the surface",
+    "caption_position": [
+      457,
+      1281
+    ],
+    "split": 0.5,
+    "outer_frame": false,
+    "photo_full_bleed": true,
+    "source_size": [
+      3791,
+      5686
+    ],
+    "header_crop_pixels": [
+      0,
+      1921,
+      3791,
+      4448
+    ],
+    "header_crop_normalized": [
+      0.0,
+      0.33784734435455505,
+      1.0,
+      0.7822722476257474
+    ],
+    "aspect_policy": "上半幅为原片等比展示裁切，原文件不改；插画等比缩放",
+    "phone_verified": false
+  },
+  "plan": {
+    "regions": [
+      {
+        "type": "wave",
+        "x": 0.64,
+        "y": 0.5,
+        "w": 0.22,
+        "h": 0.1,
+        "amplitude": 0.012,
+        "seed": 17,
+        "protect": [
+          {
+            "radius": 0.03,
+            "points": [
+              [
+                0.62,
+                0.56
+              ],
+              [
+                0.72,
+                0.65
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "type": "wave",
+        "x": 0.02,
+        "y": 0.6,
+        "w": 0.24,
+        "h": 0.2,
+        "amplitude": 0.012,
+        "seed": 17
+      }
+    ],
+    "version": 1
+  },
+  "source_derivative": "source.jpg",
+  "source_derivative_size": [
+    1280,
+    1920
+  ],
+  "source_derivative_sha256": "a830c601b9612eb196e76884aaeff88f8f1a77c55d9a36d7ab094e453b85cc41",
+  "reference_derivative": "reference.jpg",
+  "video": "preview.mp4",
+  "source_layer_static": true,
+  "exact_loop_before_encode": true,
+  "apple_verified": true,
+  "apple_checks": {
+    "valid": true,
+    "paired_identifier": true,
+    "timed_metadata": true,
+    "cover_timestamp": true
+  },
+  "phone_verified": false,
+  "encoded_video_checks": {
+    "duration": 3.0,
+    "canvas": [
+      1080,
+      1440
+    ],
+    "photo_mean_delta_255": 0.011558641975308643,
+    "art_mean_delta_255": 1.1136052050656442,
+    "moving_pixels_above_3": 3290,
+    "note": "照片源层逐帧一致；视频压缩允许极小误差。动态只在插画局部。"
+  },
+  "cloud_calls_for_this_publication": 0,
+  "note": "成品直接来自已确认版本；公开原片/参考为去元数据缩图，未重新生图。"
+}

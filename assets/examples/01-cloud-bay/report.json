@@ -1,0 +1,130 @@
+{
+  "title": "云影湖湾",
+  "source_kind": "real_travel_photograph",
+  "illustration_model": "gpt-6-luna",
+  "selection": {
+    "mode": "scene",
+    "primary_box": [
+      0.43,
+      0.55,
+      0.35000000000000003,
+      0.30999999999999994
+    ],
+    "crop_box": [
+      0.26,
+      0.48,
+      0.5599999999999999,
+      0.45999999999999996
+    ],
+    "expanded": true,
+    "reason": "没有独立突出的物件；小框只见水与林影，扩大一级让湖湾转折和白云倒影形成有特点的画面。",
+    "subject": "云影湖湾",
+    "caption": "Cloud / Ridge / Silence"
+  },
+  "composition": {
+    "style": "subject-first-printed-memory",
+    "layout_version": "full-bleed-equal-halves-1",
+    "canvas": [
+      1080,
+      1440
+    ],
+    "original_rect": [
+      0,
+      0,
+      1080,
+      720
+    ],
+    "paper_rect": [
+      0,
+      720,
+      1080,
+      720
+    ],
+    "art_rect": [
+      367,
+      968,
+      335,
+      301
+    ],
+    "caption": "Cloud / Ridge / Silence",
+    "caption_position": [
+      446,
+      1304
+    ],
+    "split": 0.5,
+    "outer_frame": false,
+    "photo_full_bleed": true,
+    "source_size": [
+      6048,
+      8064
+    ],
+    "header_crop_pixels": [
+      0,
+      3226,
+      6048,
+      7258
+    ],
+    "header_crop_normalized": [
+      0.0,
+      0.4000496031746032,
+      1.0,
+      0.9000496031746031
+    ],
+    "aspect_policy": "上半幅为原片等比展示裁切，原文件不改；插画等比缩放",
+    "phone_verified": false
+  },
+  "plan": {
+    "regions": [
+      {
+        "type": "wave",
+        "x": 0.12,
+        "y": 0.57,
+        "w": 0.3,
+        "h": 0.14,
+        "amplitude": 0.012,
+        "seed": 17
+      },
+      {
+        "type": "wave",
+        "x": 0.27,
+        "y": 0.77,
+        "w": 0.26,
+        "h": 0.13,
+        "amplitude": 0.012,
+        "seed": 17
+      }
+    ],
+    "version": 1
+  },
+  "source_derivative": "source.jpg",
+  "source_derivative_size": [
+    1440,
+    1920
+  ],
+  "source_derivative_sha256": "6599a2cbb795eb9ec2d4cf4d176308d556665a8f616dc9823634513f2b2cf285",
+  "reference_derivative": "reference.jpg",
+  "video": "preview.mp4",
+  "source_layer_static": true,
+  "exact_loop_before_encode": true,
+  "apple_verified": true,
+  "apple_checks": {
+    "valid": true,
+    "paired_identifier": true,
+    "timed_metadata": true,
+    "cover_timestamp": true
+  },
+  "phone_verified": false,
+  "encoded_video_checks": {
+    "duration": 3.0,
+    "canvas": [
+      1080,
+      1440
+    ],
+    "photo_mean_delta_255": 0.02011531207133059,
+    "art_mean_delta_255": 0.6501413199781821,
+    "moving_pixels_above_3": 4994,
+    "note": "照片源层逐帧一致；视频压缩允许极小误差。动态只在插画局部。"
+  },
+  "cloud_calls_for_this_publication": 0,
+  "note": "成品直接来自已确认版本；公开原片/参考为去元数据缩图，未重新生图。"
+}

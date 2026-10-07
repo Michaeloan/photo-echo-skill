@@ -1,0 +1,58 @@
+[
+  {
+    "id": "01-cloud-bay",
+    "title": "云影湖湾",
+    "cover": "examples/01-cloud-bay/cover.jpg",
+    "video": "examples/01-cloud-bay/preview.mp4",
+    "apple_verified": true,
+    "phone_verified": false
+  },
+  {
+    "id": "02-branch-water",
+    "title": "枝端入水",
+    "cover": "examples/02-branch-water/cover.jpg",
+    "video": "examples/02-branch-water/preview.mp4",
+    "apple_verified": true,
+    "phone_verified": false
+  },
+  {
+    "id": "03-cloud-branch",
+    "title": "云影与枝框",
+    "cover": "examples/03-cloud-branch/cover.jpg",
+    "video": "examples/03-cloud-branch/preview.mp4",
+    "apple_verified": true,
+    "phone_verified": false
+  },
+  {
+    "id": "04-submerged-wood",
+    "title": "沉木水光",
+    "cover": "examples/04-submerged-wood/cover.jpg",
+    "video": "examples/04-submerged-wood/preview.mp4",
+    "apple_verified": true,
+    "phone_verified": false
+  },
+  {
+    "id": "05-island",
+    "title": "植物小岛",
+    "cover": "examples/05-island/cover.jpg",
+    "video": "examples/05-island/preview.mp4",
+    "apple_verified": true,
+    "phone_verified": false
+  },
+  {
+    "id": "06-tree-reflection",
+    "title": "亮树与倒影",
+    "cover": "examples/06-tree-reflection/cover.jpg",
+    "video": "examples/06-tree-reflection/preview.mp4",
+    "apple_verified": true,
+    "phone_verified": false
+  },
+  {
+    "id": "07-leaf-light",
+    "title": "叶端与湖光",
+    "cover": "examples/07-leaf-light/cover.jpg",
+    "video": "examples/07-leaf-light/preview.mp4",
+    "apple_verified": true,
+    "phone_verified": false
+  }
+]

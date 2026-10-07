@@ -1,0 +1,19 @@
+{
+  "mode": "subject",
+  "primary_box": [
+    0.32,
+    0.58,
+    0.32,
+    0.36
+  ],
+  "crop_box": [
+    0.32,
+    0.58,
+    0.32,
+    0.36
+  ],
+  "expanded": false,
+  "reason": "小植物岛、短沉木和紧邻倒影已经能独立读懂；停止扩大，不加入远岸森林。",
+  "subject": "植物小岛",
+  "caption": "Still water"
+}
