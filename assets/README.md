@@ -8,7 +8,7 @@
 - source-display.jpg：原成品上半幅实际显示区域。
 - reference.jpg：原插画实际取景的公开缩图。
 - illustration.png：原成品使用的插画图层。
-- cover.jpg、preview.mp4：用户已确认版本的封面与完整视频，未重新生图。
+- cover.jpg、preview.mp4：真实手帐封面和视频；植物小岛已更新连续运动，其余六张沿用原确认版本，均未重新生图。
 - selection.json、motion.json：相对源图与插画资产的两个独立坐标系。
 - report.json：去除本机路径后的取景、构图和电脑检查记录。
 - motion.gif：部分作品附带，从同一MP4下半幅生成的微动预览。

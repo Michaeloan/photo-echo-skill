@@ -19,6 +19,7 @@ from handbook_core.editorial import compose_equal_halves
 from handbook_core.media import (NO_WINDOW, extract_cover, package_apple, run, stop_process,
                                  tool_path, video_info)
 from handbook_core.selection import crop_reference, selection_header_focus, validate_selection
+from handbook_core.continuous_motion import VERSION as MOTION_VERSION
 
 
 def read_json(path):
@@ -127,7 +128,7 @@ def export(args):
         raise RuntimeError("FFmpeg is required for video; --still creates a PNG without it")
     output = Path(args.out)
     output.mkdir(parents=True, exist_ok=False)
-    report = {"state": "rendering", "animation_configured": bool(plan["regions"]), "apple_verified": False,
+    report = {"state": "rendering", "motion_version": MOTION_VERSION, "animation_configured": bool(plan["regions"]), "apple_verified": False,
               "phone_verified": False, "composition": scene.meta, "selection": selection, "plan": plan,
               "source_sha256": hashlib.sha256(Path(args.source).read_bytes()).hexdigest(), "duration": duration,
               "fps": args.fps, "files": {}}

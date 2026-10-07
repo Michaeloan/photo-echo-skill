@@ -76,22 +76,64 @@
   "plan": {
     "regions": [
       {
-        "type": "wave",
-        "x": 0.015,
-        "y": 0.51,
-        "w": 0.17,
-        "h": 0.17,
-        "amplitude": 0.012,
-        "seed": 17
+        "type": "float",
+        "x": 0.28,
+        "y": 0.02,
+        "w": 0.42,
+        "h": 0.4,
+        "amplitude": 0.02,
+        "seed": 17,
+        "protect": [
+          {
+            "radius": 0.006,
+            "points": [
+              [
+                0.5,
+                0.13
+              ],
+              [
+                0.5,
+                0.4
+              ],
+              [
+                0.5,
+                0.55
+              ]
+            ]
+          }
+        ]
       },
       {
         "type": "wave",
-        "x": 0.4,
-        "y": 0.77,
-        "w": 0.16,
-        "h": 0.18,
-        "amplitude": 0.012,
-        "seed": 17
+        "x": 0.03,
+        "y": 0.53,
+        "w": 0.67,
+        "h": 0.44,
+        "amplitude": 0.019,
+        "seed": 17,
+        "protect": [
+          {
+            "radius": 0.012,
+            "points": [
+              [
+                0.5,
+                0.46
+              ],
+              [
+                0.51,
+                0.58
+              ],
+              [
+                0.59,
+                0.6
+              ],
+              [
+                0.9,
+                0.68
+              ]
+            ]
+          }
+        ]
       }
     ],
     "version": 1
@@ -114,17 +156,9 @@
     "cover_timestamp": true
   },
   "phone_verified": false,
-  "encoded_video_checks": {
-    "duration": 3.0,
-    "canvas": [
-      1080,
-      1440
-    ],
-    "photo_mean_delta_255": 0.008892318244170095,
-    "art_mean_delta_255": 0.9779948491537895,
-    "moving_pixels_above_3": 4120,
-    "note": "照片源层逐帧一致；视频压缩允许极小误差。动态只在插画局部。"
-  },
   "cloud_calls_for_this_publication": 0,
-  "note": "成品直接来自已确认版本；公开原片/参考为去元数据缩图，未重新生图。"
+  "note": "原片、插画、排版沿用确认版本；运动更新为连续形变。",
+  "motion_version": "continuous-local-motion-1",
+  "motion_update": "连续水纹＋根部保护的叶端轻摆；只更新运动，未重新生成插画。",
+  "changed_pixels_before_encode": 22039
 }

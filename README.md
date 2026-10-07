@@ -60,13 +60,15 @@
   <img src="assets/examples/05-island/motion.gif" width="560" alt="植物小岛成品MP4下半幅：仅根部水纹和下方倒影轻微变化，岸上植物和沉木固定">
 </p>
 
-GIF放大展示下半幅，根部左侧水纹与下方倒影各有一个小区域；岸上植物和短沉木保持固定。完整视频里的上半照片、纸面和标题也固定。查看 [完整三秒MP4](assets/examples/05-island/preview.mp4) 或 [制作检查记录](assets/examples/05-island/report.json)。
+GIF放大展示下半幅：连续水纹与叶端轻摆分成两个区域，主干、根部和短沉木有保护笔迹。完整视频里的上半照片、纸面和标题固定。查看 [完整三秒MP4](assets/examples/05-island/preview.mp4) 或 [制作检查记录](assets/examples/05-island/report.json)。
+
+动态更新使用连续形变，运动在边缘平滑归零，只采样一次，避免原线条与移位线条叠出重影。水纹持续推进，叶端依连接位置轻摆；位移与局部形变均有限制。可以看 [三版动态对比](assets/motion-comparison.mp4)：从左至右是原版、连续水纹、叶端轻摆＋水纹。
 
 | 枝端入水 · 局部水纹 | 亮树与倒影 · 局部倒影 |
 | :---: | :---: |
 | <img src="assets/examples/02-branch-water/motion.gif" width="390" alt="枝端入水成品的局部微动"> | <img src="assets/examples/06-tree-reflection/motion.gif" width="390" alt="亮树与倒影成品的局部微动"> |
 
-> 全部展示来自维护者授权公开的七张真实照片与已确认成品。插画由Luna编排生图工具制作，排版和局部动画在本机完成。此次发布直接复用成品，没有重新生图；公开原片与参考图已缩小并去除EXIF。GIF用于预览，Apple配对检查与手机实测分别记录。
+> 全部展示来自维护者授权公开的七张真实照片。插画由Luna编排生图工具制作，排版和局部动画在本机完成。植物小岛的运动现已改为连续水纹＋叶端轻摆，原片、插画与排版沿用原版本，其余六张保留已确认成品。更新未重新生图；公开原片与参考图已縮小并去除EXIF。GIF用于预览，Apple配对检查与手机实测分别记录。
 
 ## 怎样选景，怎样排版
 

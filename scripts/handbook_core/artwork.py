@@ -1,10 +1,9 @@
-"""Prepare small scene layers and keep motion inside their masks."""
+"""Original scene preparation and continuous asset-local animation."""
 from dataclasses import dataclass
-import math
 import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageOps
-from .animation import region_mask, validate_plan
+from .continuous_motion import local_motion as continuous_local_motion
 MAX_SCENE_PIXELS = 8_000_000
 
 def prepare_scene(image):
@@ -53,68 +52,12 @@ def prepare_scene(image):
     return image.crop((max(0, x0-pad), max(0, y0-pad),
                        min(image.width, x1+pad), min(image.height, y1+pad)))
 
-
 def _resize_rgba(image, size):
     # Pillow RGBa uses premultiplied alpha, preventing dark fringe interpolation.
     return image.convert("RGBa").resize(size, Image.Resampling.LANCZOS).convert("RGBA")
 
-
-def _protect_mask(region, width, height):
-    image = Image.new("L", (width, height))
-    draw = ImageDraw.Draw(image)
-    for stroke in region.get("protect", []):
-        radius = stroke["radius"]*min(width, height)
-        points = [(x*width, y*height) for x, y in stroke["points"]]
-        if len(points) > 1:
-            draw.line(points, fill=255, width=max(1, round(radius*2)))
-        for x, y in points:
-            draw.ellipse((x-radius, y-radius, x+radius, y+radius), fill=255)
-    return np.asarray(image) > 0
-
-
 def local_motion(art, plan, seconds, duration=3):
-    """Only move approved asset-local pixels; never move the whole paper/scene."""
-    if not math.isfinite(duration) or duration <= 0 or not math.isfinite(seconds):
-        raise ValueError("动画时间无效")
-    plan = validate_plan(plan or {})
-    if not plan["regions"]:
-        return art.copy()
-    source = np.asarray(art.convert("RGBA")).astype(np.float32)/255
-    alpha = source[..., 3:4]
-    premult = np.concatenate([source[..., :3]*alpha, alpha], axis=2)
-    out = premult.copy()
-    h, w = out.shape[:2]
-    yy, xx = np.mgrid[:h, :w].astype(np.float32)
-    phase = 2*math.pi*(seconds/duration % 1)
-    # Green protection is global to the scene, even where two effects overlap.
-    protected = np.zeros((h, w), dtype=bool)
-    for region in plan["regions"]:
-        protected |= _protect_mask(region, w, h)
-    for region in plan["regions"]:
-        if region["type"] not in {"wave", "float"}:
-            raise ValueError("当前小场景只支持局部水纹或轻摆，不添加无来源粒子")
-        mask = region_mask(region, w, h)
-        # Keep all pixels outside the requested rectangle exact, even after feathering.
-        inside = ((xx >= region["x"]*w) & (xx < (region["x"]+region["w"])*w)
-                  & (yy >= region["y"]*h) & (yy < (region["y"]+region["h"])*h))
-        mask *= inside
-        mask[protected] = 0
-        amplitude = min(3.0, region["amplitude"]*min(w, h))
-        if region["type"] == "wave":
-            dx = np.sin(yy/max(1, h)*math.pi*4+phase)*math.sin(phase)*amplitude
-            dy = np.zeros_like(dx)
-        else:
-            # Anchored in space: the region's root remains still.
-            anchor = np.clip((yy-region["y"]*h)/max(1, region["h"]*h), 0, 1)
-            dx = math.sin(phase)*amplitude*(1-anchor)**2
-            dy = np.zeros_like(dx)
-        changed = cv2.remap(premult, xx-dx, yy-dy, cv2.INTER_LINEAR,
-                            borderMode=cv2.BORDER_CONSTANT, borderValue=0)
-        out = out*(1-mask[..., None])+changed*mask[..., None]
-    rgb = np.divide(out[..., :3], np.maximum(out[..., 3:4], 1/255))
-    straight = np.concatenate([rgb, out[..., 3:4]], axis=2)
-    return Image.fromarray(np.clip(np.round(straight*255), 0, 255).astype(np.uint8), "RGBA")
-
+    return continuous_local_motion(art, plan, seconds, duration)
 
 @dataclass(frozen=True)
 class SceneComposition:
