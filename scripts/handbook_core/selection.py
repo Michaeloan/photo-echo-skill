@@ -49,7 +49,7 @@ def build_selection_prompt():
         "两个box均为[x,y,w,h]，坐标相对于转正后整张照片，有限实数0至1；w、h必须大于0；"
         "x+w和y+h不能超过1；crop_box必须完全包含primary_box。不要只取无法辨认的几个像素。"
         "reason用简短中文说明核心特征、最小可读范围及必要扩大原因；subject是准确的中文局部名称；"
-        "caption是不超过32字的简洁标题，可以为空。不得虚构地点、时间或摄影设备。\n"
+        "caption只用简短英文（ASCII英文字母与标点，最多32字符），禁止中文，可为空。不得虚构地点、时间或摄影设备。\n"
         "JSON结构：" + json.dumps(SELECTION_SCHEMA, ensure_ascii=False, separators=(",", ":"))
     )
 

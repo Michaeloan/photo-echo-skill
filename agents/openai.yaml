@@ -1,4 +1,4 @@
 interface:
   display_name: "Photo Echo · 照片回声"
-  short_description: "输入一组照片，提炼小景插画与轻量微动，整批成品按原图名字集中输出"
+  short_description: "完整原图与自由比例手帐，英文配文、批量静态导出，已有插画可直接复用调整"
   default_prompt: "使用 $photo-echo，把这些照片做成手帐，整批结果放在一起。"

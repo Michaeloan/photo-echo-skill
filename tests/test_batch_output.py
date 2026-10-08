@@ -74,7 +74,7 @@ class BatchOutputTests(unittest.TestCase):
         image=Image.new("RGB",(100,300),"red")
         ImageDraw.Draw(image).rectangle((0,150,99,299),fill="blue");image.save(source)
         code,summary=self.invoke("render","--source",str(source),"--art",str(self.art),
-            "--focus",".5","1","--still","--width","120","--height","160")
+            "--focus",".5","1","--still","--width","120","--height","160","--layout","legacy-crop")
         self.assertEqual(code,0)
         with Image.open(Path(summary["output"])/"portrait_手帐.png") as result:
             self.assertEqual(result.getpixel((0,0)),(0,0,255))

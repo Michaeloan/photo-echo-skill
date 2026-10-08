@@ -1,0 +1,58 @@
+{
+  "layout_version": "editorial-full-photo-1",
+  "canvas": [
+    1080,
+    1928
+  ],
+  "original_rect": [
+    0,
+    0,
+    1080,
+    1208
+  ],
+  "paper_rect": [
+    0,
+    1208,
+    1080,
+    720
+  ],
+  "art_rect": [
+    387,
+    1439,
+    392,
+    302
+  ],
+  "split": 0.6265560165975104,
+  "outer_frame": false,
+  "photo_full_bleed": true,
+  "source_size": [
+    1716,
+    1920
+  ],
+  "header_crop_pixels": [
+    0,
+    0,
+    1716,
+    1920
+  ],
+  "header_crop_normalized": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+  ],
+  "header_focus": [
+    0.5,
+    0.5
+  ],
+  "motif_scale": 1,
+  "caption": "Branches by the water",
+  "caption_position": [
+    424,
+    1773
+  ],
+  "photo_complete": true,
+  "aspect_policy": "完整原图等比缩放，画布比例随原图及留白高度变化",
+  "paper_ratio": 0.6666666666666666,
+  "canvas_policy": "adaptive"
+}

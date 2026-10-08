@@ -1,5 +1,9 @@
 [
-  {"source": "02-branch-water/source.jpg", "art": "02-branch-water/illustration.png", "selection": "02-branch-water/selection.json", "plan": "02-branch-water/motion.json"},
-  {"source": "05-island/source.jpg", "art": "05-island/illustration.png", "selection": "05-island/selection.json", "plan": "05-island/motion.json"},
-  {"source": "06-tree-reflection/source.jpg", "art": "06-tree-reflection/illustration.png", "selection": "06-tree-reflection/selection.json", "plan": "06-tree-reflection/motion.json"}
+  {"name":"01-cloud-bay.jpg","source":"01-cloud-bay/source.jpg","art":"01-cloud-bay/illustration.png","selection":"01-cloud-bay/selection.json","plan":"01-cloud-bay/motion.json","caption":"Clouds over the bay"},
+  {"name":"02-branch-water.jpg","source":"02-branch-water/source.jpg","art":"02-branch-water/illustration.png","selection":"02-branch-water/selection.json","plan":"02-branch-water/motion.json","caption":"Branches by the water"},
+  {"name":"03-cloud-branch.jpg","source":"03-cloud-branch/source.jpg","art":"03-cloud-branch/illustration.png","selection":"03-cloud-branch/selection.json","plan":"03-cloud-branch/motion.json","caption":"Clouds and branches"},
+  {"name":"04-submerged-wood.jpg","source":"04-submerged-wood/source.jpg","art":"04-submerged-wood/illustration.png","selection":"04-submerged-wood/selection.json","plan":"04-submerged-wood/motion.json","caption":"Light beneath the water"},
+  {"name":"05-island.jpg","source":"05-island/source.jpg","art":"05-island/illustration.png","selection":"05-island/selection.json","plan":"05-island/motion.json","caption":"Still water"},
+  {"name":"06-tree-reflection.jpg","source":"06-tree-reflection/source.jpg","art":"06-tree-reflection/illustration.png","selection":"06-tree-reflection/selection.json","plan":"06-tree-reflection/motion.json","caption":"Trees and reflections"},
+  {"name":"07-leaf-light.jpg","source":"07-leaf-light/source.jpg","art":"07-leaf-light/illustration.png","selection":"07-leaf-light/selection.json","plan":"07-leaf-light/motion.json","caption":"Leaves in the light"}
 ]

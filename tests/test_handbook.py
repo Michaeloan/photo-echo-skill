@@ -73,7 +73,7 @@ class HandbookTests(unittest.TestCase):
             plan = self.root / "bad-plan.json"
             plan.write_text(json.dumps({"regions":[region]}), encoding="utf-8")
             argv = ["render_handbook.py", "render", "--source", "nonexistent.jpg", "--art", "nonexistent.png",
-                    "--plan", str(plan), "--out", str(self.root/"out")]
+                    "--plan", str(plan), "--out", str(self.root/"out"), "--video"]
             with patch.object(sys, "argv", argv), patch("render_handbook.tool_path", side_effect=AssertionError("tools must not run")):
                 self.assertEqual(main(),2)
             self.assertFalse(list((self.root/"out").glob("*_手帐.*")))

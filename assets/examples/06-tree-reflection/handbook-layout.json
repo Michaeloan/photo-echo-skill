@@ -1,0 +1,58 @@
+{
+  "layout_version": "editorial-full-photo-1",
+  "canvas": [
+    1080,
+    1440
+  ],
+  "original_rect": [
+    0,
+    0,
+    1080,
+    720
+  ],
+  "paper_rect": [
+    0,
+    720,
+    1080,
+    720
+  ],
+  "art_rect": [
+    389,
+    962,
+    278,
+    301
+  ],
+  "split": 0.5,
+  "outer_frame": false,
+  "photo_full_bleed": true,
+  "source_size": [
+    1920,
+    1280
+  ],
+  "header_crop_pixels": [
+    0,
+    0,
+    1920,
+    1280
+  ],
+  "header_crop_normalized": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+  ],
+  "header_focus": [
+    0.5,
+    0.5
+  ],
+  "motif_scale": 1,
+  "caption": "Trees and reflections",
+  "caption_position": [
+    425,
+    1295
+  ],
+  "photo_complete": true,
+  "aspect_policy": "完整原图等比缩放，画布比例随原图及留白高度变化",
+  "paper_ratio": 0.6666666666666666,
+  "canvas_policy": "adaptive"
+}
